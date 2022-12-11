@@ -66,3 +66,8 @@ buck-out/
 android/local.properties
 
 android/app/google-services.json
+
+.bundle
+
+yarn.lock
+package-lock.json
