@@ -10,7 +10,8 @@ export default StyleSheet.create({
         flexDirection: 'row'
     },
     input: {
-        flex: 1
+        flex: 1,
+        color: colors.darkGray
         //padding: Platform.OS === 'android' ? 5 : 5,
     }
 })
