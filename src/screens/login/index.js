@@ -1,16 +1,19 @@
-import { Text, StyleSheet, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import { useState } from 'react'
-import { showMessage } from 'react-native-flash-message'
+import FlashMessage, { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Formik } from 'formik'
 import colors from '../../styles/colors'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import authErrorMessageParser from '../../utils/authErrorMessageParser'
+import * as yup from 'yup'
+import LogoContainer from '../../components/LogoContainer'
+import { authStackStyle } from '../../styles/authStackStyle'
 
 const initialValues = {
-    username: '',
+    email: '',
     password: ''
 }
 
@@ -20,16 +23,27 @@ const Login = ({ route, navigation }) => {
 
     console.log('isAuth: ', isAuth)
 
+    const loginValidationSchema = yup.object().shape({
+        email: yup
+            .string()
+            .email('Lütfen geçerli bir e-mail giriniz.')
+            .required('E-mail alanı zorunludur'),
+        password: yup
+            .string()
+            .min(6, ({ min }) => `Parolanız en az ${min} karakter olmalıdır.`)
+            .required('Parola alanı zorunludur.')
+    })
+
     const handleRegister = () => {
         console.log('login pressed')
         navigation.navigate('Register')
     }
 
-    async function handleFormSubmit(formValues) {
+    const handleFormSubmit = async (formValues) => {
         try {
             setLoading(true)
             await auth().signInWithEmailAndPassword(
-                formValues.username,
+                formValues.email,
                 formValues.password
             )
             showMessage({
@@ -37,7 +51,7 @@ const Login = ({ route, navigation }) => {
                 type: 'success'
             })
             setLoading(false)
-            navigation.navigate('Feed')
+            navigation.navigate('Register')
         } catch (error) {
             console.log('error: ', error.code)
             showMessage({
@@ -47,66 +61,76 @@ const Login = ({ route, navigation }) => {
             setLoading(false)
         }
     }
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: 'center'
-        },
-        textStyle: {
-            padding: 8,
-            margin: 16,
-            marginBottom: 16,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontSize: 30,
-            color: colors.white
-        },
-        btnStyle: {
-            backgrounColor: colors.gray
-        },
-        formContainer: {
-            padding: 15
-        },
-        input: {
-            flex: 1
-        },
-        header: {
-            color: colors.darkPurple,
-            fontSize: 40,
-            fontWeight: 'bold',
-            margin: 5,
-            textAlign: 'center',
-            paddingBottom: 30
-        }
-    })
+
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Zirzapp Chat</Text>
-            <Formik onSubmit={handleFormSubmit} initialValues={initialValues}>
-                {({ values, handleChange, handleSubmit }) => (
-                    <>
-                        <View style={styles.formContainer}>
-                            <Input
-                                value={values.username}
-                                onType={handleChange('username')}
-                                placeholder="e-posta giriniz..."
-                            />
-                            <Input
-                                isSecure
-                                value={values.password}
-                                onType={handleChange('password')}
-                                placeholder="parola giriniz..."
-                            />
-                            <Button text="Giriş Yap" onPress={handleSubmit} />
-                            <Button
-                                text="Kayıt Ol"
-                                theme="secondary"
-                                onPress={handleRegister}
-                            />
-                        </View>
-                    </>
-                )}
-            </Formik>
+        <SafeAreaView style={authStackStyle.container}>
+            <ScrollView>
+                <LogoContainer />
+                <Formik
+                    validationSchema={loginValidationSchema}
+                    onSubmit={handleFormSubmit}
+                    initialValues={initialValues}
+                >
+                    {({
+                        values,
+                        handleChange,
+                        handleSubmit,
+                        handleBlur,
+                        errors,
+                        touched
+                    }) => (
+                        <>
+                            <FlashMessage position="top" />
+
+                            <View style={authStackStyle.formContainer}>
+                                <Input
+                                    value={values.email}
+                                    onType={handleChange('email')}
+                                    placeholder="e-mail giriniz..."
+                                    onBlur={handleBlur('password')}
+                                />
+                                {errors.email && touched.email && (
+                                    <Text
+                                        style={{
+                                            paddingHorizontal: 25,
+                                            fontSize: 10,
+                                            color: 'red'
+                                        }}
+                                    >
+                                        {errors.email}
+                                    </Text>
+                                )}
+                                <Input
+                                    isSecure
+                                    value={values.password}
+                                    onType={handleChange('password')}
+                                    placeholder="parola giriniz..."
+                                />
+                                {errors.password && touched.password && (
+                                    <Text
+                                        style={{
+                                            paddingHorizontal: 25,
+                                            fontSize: 10,
+                                            color: 'red'
+                                        }}
+                                    >
+                                        {errors.password}
+                                    </Text>
+                                )}
+                                <Button
+                                    text="Giriş Yap"
+                                    onPress={handleSubmit}
+                                />
+                                <Button
+                                    text="Kayıt Ol"
+                                    theme="secondary"
+                                    onPress={handleRegister}
+                                />
+                            </View>
+                        </>
+                    )}
+                </Formik>
+            </ScrollView>
         </SafeAreaView>
     )
 }
