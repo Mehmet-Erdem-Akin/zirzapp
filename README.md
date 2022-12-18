@@ -7,5 +7,7 @@ Zirzapp Chat project
 2) npx react-native run-android
 3) You can find the last updated apk file in **"android/app/build/outputs/apk/release"** directory.
 
+<p float="left">
 <img width="200" src="https://raw.githubusercontent.com/Mehmet-Erdem-Akin/zirzapp/master/src/assets/screens-ss/login.png">
-<img height="auto"  width="200" src="https://raw.githubusercontent.com/Mehmet-Erdem-Akin/zirzapp/master/src/assets/screens-ss/register.png">
+<img width="200" src="https://raw.githubusercontent.com/Mehmet-Erdem-Akin/zirzapp/master/src/assets/screens-ss/register.png">
+</p>
