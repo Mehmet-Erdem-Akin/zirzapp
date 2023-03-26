@@ -84,8 +84,16 @@ const App: () => Node = () => {
     const MainStack = () => {
         return (
             <Tab.Navigator>
-                <Tab.Screen name="Feed" component={Feed} />
-                <Tab.Screen name="Messages" component={Messages} />
+                <Tab.Screen
+                    options={{ headerShown: false }}
+                    name="Feed"
+                    component={Feed}
+                />
+                <Tab.Screen
+                    options={{ headerShown: false }}
+                    name="Messages"
+                    component={Messages}
+                />
             </Tab.Navigator>
         )
     }

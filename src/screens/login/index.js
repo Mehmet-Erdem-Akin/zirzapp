@@ -1,10 +1,9 @@
-import { ScrollView, Text, View } from 'react-native'
+import { ImageBackground, ScrollView, Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import { useState } from 'react'
 import FlashMessage, { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Formik } from 'formik'
-import colors from '../../styles/colors'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import authErrorMessageParser from '../../utils/authErrorMessageParser'
@@ -64,73 +63,78 @@ const Login = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={authStackStyle.container}>
-            <ScrollView>
-                <LogoContainer />
-                <Formik
-                    validationSchema={loginValidationSchema}
-                    onSubmit={handleFormSubmit}
-                    initialValues={initialValues}
-                >
-                    {({
-                        values,
-                        handleChange,
-                        handleSubmit,
-                        handleBlur,
-                        errors,
-                        touched
-                    }) => (
-                        <>
-                            <FlashMessage position="top" />
+            <ImageBackground
+                source={require('../../assets/vector-bg.png')}
+                style={{ width: '100%', height: '100%' }}
+            >
+                <ScrollView>
+                    <LogoContainer />
+                    <Formik
+                        validationSchema={loginValidationSchema}
+                        onSubmit={handleFormSubmit}
+                        initialValues={initialValues}
+                    >
+                        {({
+                            values,
+                            handleChange,
+                            handleSubmit,
+                            handleBlur,
+                            errors,
+                            touched
+                        }) => (
+                            <>
+                                <FlashMessage position="top" />
 
-                            <View style={authStackStyle.formContainer}>
-                                <Input
-                                    value={values.email}
-                                    onType={handleChange('email')}
-                                    placeholder="e-mail giriniz..."
-                                    onBlur={handleBlur('password')}
-                                />
-                                {errors.email && touched.email && (
-                                    <Text
-                                        style={{
-                                            paddingHorizontal: 25,
-                                            fontSize: 10,
-                                            color: 'red'
-                                        }}
-                                    >
-                                        {errors.email}
-                                    </Text>
-                                )}
-                                <Input
-                                    isSecure
-                                    value={values.password}
-                                    onType={handleChange('password')}
-                                    placeholder="parola giriniz..."
-                                />
-                                {errors.password && touched.password && (
-                                    <Text
-                                        style={{
-                                            paddingHorizontal: 25,
-                                            fontSize: 10,
-                                            color: 'red'
-                                        }}
-                                    >
-                                        {errors.password}
-                                    </Text>
-                                )}
-                                <Button
-                                    text="Giriş Yap"
-                                    onPress={handleSubmit}
-                                />
-                                <Button
-                                    text="Kayıt Ol"
-                                    theme="secondary"
-                                    onPress={handleRegister}
-                                />
-                            </View>
-                        </>
-                    )}
-                </Formik>
-            </ScrollView>
+                                <View style={authStackStyle.formContainer}>
+                                    <Input
+                                        value={values.email}
+                                        onType={handleChange('email')}
+                                        placeholder="e-mail giriniz..."
+                                        onBlur={handleBlur('password')}
+                                    />
+                                    {errors.email && touched.email && (
+                                        <Text
+                                            style={{
+                                                paddingHorizontal: 25,
+                                                fontSize: 10,
+                                                color: 'red'
+                                            }}
+                                        >
+                                            {errors.email}
+                                        </Text>
+                                    )}
+                                    <Input
+                                        isSecure
+                                        value={values.password}
+                                        onType={handleChange('password')}
+                                        placeholder="parola giriniz..."
+                                    />
+                                    {errors.password && touched.password && (
+                                        <Text
+                                            style={{
+                                                paddingHorizontal: 25,
+                                                fontSize: 10,
+                                                color: 'red'
+                                            }}
+                                        >
+                                            {errors.password}
+                                        </Text>
+                                    )}
+                                    <Button
+                                        text="Giriş Yap"
+                                        onPress={handleSubmit}
+                                    />
+                                    <Button
+                                        text="Kayıt Ol"
+                                        theme="secondary"
+                                        onPress={handleRegister}
+                                    />
+                                </View>
+                            </>
+                        )}
+                    </Formik>
+                </ScrollView>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
