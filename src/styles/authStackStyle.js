@@ -5,8 +5,7 @@ export const authStackStyle = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignContent: 'center',
-        backgroundColor: colors.white
+        alignContent: 'center'
     },
     textStyle: {
         padding: 8,
@@ -24,7 +23,8 @@ export const authStackStyle = StyleSheet.create({
         padding: 15
     },
     input: {
-        flex: 1
+        flex: 1,
+        color: '#000'
     },
     header: {
         color: colors.darkPurple,
